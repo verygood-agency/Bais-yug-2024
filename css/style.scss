@@ -1,0 +1,64 @@
+@import "base/fonts";
+@import "base/root";
+@import "base/global";
+
+@import "blocks/visually-hidden";
+@import "blocks/wrapper";
+@import "blocks/container";
+@import "blocks/button";
+@import "blocks/title";
+@import "blocks/custom-form";
+@import "blocks/card-item";
+@import "blocks/section";
+@import "blocks/scalable-picture";
+@import "blocks/mini-card";
+@import "blocks/creative-title";
+@import "blocks/big-image";
+@import "blocks/reviews-card";
+@import "blocks/decorate-wrapper";
+@import "blocks/social-list";
+@import "blocks/swiper";
+@import "blocks/custom-map";
+@import "blocks/direction-card";
+
+@import "sections/header";
+@import "sections/home-screen";
+@import "sections/content";
+@import "sections/card-slider";
+@import "sections/catalog-directions";
+@import "sections/catalog-announce";
+@import "sections/advances";
+@import "sections/reviews";
+@import "sections/map";
+
+@import "sections/footer";
+
+.full-image {
+  max-width: 100%;
+  width: 100%;
+
+  img {
+    display: block;
+    max-width: 100%;
+    width: 100%;
+  }
+}
+
+.card-grid {
+  display: grid;
+  gap: 25px;
+  grid-template-columns: repeat(2, 1fr);
+}
+.hero {
+  padding-top: 250px;
+}
+.inner-page {
+  padding-bottom: 90px;
+}
+// @import "pages/search-page";
+
+// @import "activity/scroll";
+// @import "activity/menu-accordion-active";
+// @import "activity/menu-open";
+// @import "activity/header-sticky";
+// @import "activity/header-search-active";
