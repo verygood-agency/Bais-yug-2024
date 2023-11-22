@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Блог></title>
+  <title>Блог</title>
 
   @@include('src/blocks/head.html')
 
@@ -13,23 +13,22 @@
 <body class="inner-page">
   @@include('src/blocks/header.html')
   <main class="main">
-    <div class="breadcrumbs">
+
+    <section class="section">
       <div class="wrapper">
         <div class="container">
-          <ul class="breadcrumbs__list">
-            <li class="breadcrumbs__item">
-              <a class="breadcrumbs__link" href="#">Главная</a>
-            </li>
-            <li class="breadcrumbs__item">
-              <a class="breadcrumbs__link">Магазины-партнёры</a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
-    <section class="hero">
-      <div class="wrapper">
-        <div class="container">
+
+          <div class="breadcrumbs">
+            <ul class="breadcrumbs__list">
+              <li class="breadcrumbs__item">
+                <a class="breadcrumbs__link" href="#">Главная</a>
+              </li>
+              <li class="breadcrumbs__item">
+                <a class="breadcrumbs__link">Магазины-партнёры</a>
+              </li>
+            </ul>
+          </div>
+
           <h1 class="title">Блог</h1>
 
           <ul class="tag-list">
@@ -65,9 +64,9 @@
       </div>
     </section>
 
-    <section class="section content">
+    <section class="section article-list">
       <div class="wrapper">
-        <div class="card-grid">
+        <ul class="article-list__grid">
           @@include('src/blocks/card-item.html')
           @@include('src/blocks/card-item-2.html')
           @@include('src/blocks/card-item.html')
@@ -76,9 +75,28 @@
           @@include('src/blocks/card-item-2.html')
           @@include('src/blocks/card-item.html')
           @@include('src/blocks/card-item-2.html')
+        </ul>
+
+        <div class="pagination">
+          <ul class="pagination__list">
+            <li class="pagination__item">
+              <a class="pagination__link pagination__link--prev" href="#" title="Предыдущая страница">Назад</a>
+            </li>
+            <li class="pagination__item"><a class="pagination__link active" href="#"><span>1</span></a></li>
+            <li class="pagination__item"><a class="pagination__link" href="#"><span>2</span></a></li>
+            <li class="pagination__item"><a class="pagination__link" href="#"><span>3</span></a></li>
+            <li class="pagination__item"><a class="pagination__link" href="#"><span>4</span></a></li>
+            <li class="pagination__item"><a class="pagination__link" href="#"><span>5</span></a></li>
+            <li class="pagination__item"><a class="pagination__link" href="#"><span>6</span></a></li>
+            <li class="pagination__item"><a class="pagination__link pagination__link--next" href="#"
+                title="Следующая страница">Вперёд</a></li>
+          </ul>
         </div>
+
       </div>
     </section>
+
+
 
   </main>
 </body>
