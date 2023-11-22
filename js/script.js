@@ -105,6 +105,19 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   };
 
+  //   // слайдер c отзывами
+  if (document.querySelector('.docs .mySwiper')) {
+    console.log('Слайдер с документами есть!');
+    var homeScreenSwiper = new Swiper(".docs .mySwiper", {
+      slidesPerView: 4,
+      spaceBetween: 80,
+      navigation: {
+                nextEl: ".docs .swiper-button-next",
+                prevEl: ".docs .swiper-button-prev",
+              },
+    });
+  };
+
   //   // слайдер с логотипами
   //   if (document.querySelector('.customers .mySwiper')) {
   //     console.log('Слайдер с логотипами есть!');
@@ -263,163 +276,122 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  //   // Аккондиончики в подвале с менюшками
-  //   // Получаем все элементы с классом .footer-accordion
-  //   const accordions = document.querySelectorAll('.footer-accordion');
+  // Простой аккордеон
+  const titles = document.querySelectorAll('.accordion__title');
+  // Функция для закрытия всех аккордеонов
+  function closeAllAccordions() {
+    titles.forEach(otherTitle => {
+      otherTitle.classList.remove('active');
+      otherTitle.nextElementSibling.style.maxHeight = null;
+    });
+  }
+  // Инициализация первого аккордеона как активного
+  if (titles.length > 0) {
+    titles[0].classList.add('active');
+    titles[0].nextElementSibling.style.maxHeight = titles[0].nextElementSibling.scrollHeight + "px";
+  }
+  // Прослушивание кликов на всех заголовках аккордеонов
+  titles.forEach(title => {
+    title.addEventListener('click', () => {
+      const accordionBody = title.nextElementSibling;
+      const isActive = title.classList.contains('active');
+      closeAllAccordions(); // Сначала закрываем все аккордеоны
+      // Затем переключаем состояние нажатого аккордеона
+      if (!isActive) {
+        title.classList.add('active');
+        accordionBody.style.maxHeight = accordionBody.scrollHeight + "px";
+      }
+    });
+  });
 
-  //   // Определяем функцию, которая будет выполняться при клике
-  //   function toggleAccordion(event) {
-  //     // Проверяем, является ли элемент, по которому кликнули, или его родитель, элементом с классом .footer-navigation__link
-  //     let target = event.target;
-  //     while (target != this) {
-  //       if (target.matches('.footer-navigation__link')) {
-  //         // Отменяем действие по умолчанию
-  //         event.preventDefault();
-  //         console.log('111');
-  //         // Добавляем или удаляем активный класс
-  //         this.classList.toggle('active');
-  //         break;
-  //       }
-  //       target = target.parentNode;
-  //     }
-  //   }
+  // Работа с формами
+  const handleClickOrTouch = (element, callback) => {
+    const touchendListener = (e) => {
+      e.preventDefault();
+      element.removeEventListener('touchend', touchendListener);
+      callback(e);
+    };
 
-  //   // Добавляем слушателей событий на все .footer-accordion
-  //   if (document.documentElement.clientWidth <= 767) {
-  //     accordions.forEach(function (accordion) {
-  //       accordion.addEventListener('click', toggleAccordion);
-  //     });
-  //   };
+    element.addEventListener('click', callback);
+    element.addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      element.addEventListener('touchend', touchendListener);
+    });
+  };
 
+  const setupBodyClickListener = () => {
+    document.removeEventListener('click', bodyClickListener);
 
-  //   // показ блока поиска в шапке сайта
-  //   // Поиск элемента .js-show-me-header
-  //   var searchLink = document.querySelector('.js-show-me-header');
+    function bodyClickListener(event) {
+      let activeModal = document.querySelector('.modal.active');
+      if (activeModal && (!event.target.closest('.modal__body') || event.target.closest('.js-close-modal'))) {
+        activeModal.classList.remove('active');
+        document.removeEventListener('click', bodyClickListener);
+      }
+    }
 
-  //   // Если элемент найден, то слушаем событие клика
-  //   if (searchLink) {
-  //     searchLink.addEventListener('click', function (event) {
-  //       // Отменяем действие по умолчанию для ссылки
-  //       event.preventDefault();
+    document.addEventListener('click', bodyClickListener);
+  };
 
-  //       // Добавляем или удаляем класс .header-search-active у body
-  //       document.body.classList.toggle('header-search-active');
-  //     });
-  //   }
+  let showDialogButtons = document.querySelectorAll('[data-target]');
+  showDialogButtons.forEach(button => {
+    handleClickOrTouch(button, function (event) {
+      event.preventDefault();
+      event.stopPropagation();
 
-  //   // Поиск элемента .close внутри .header-search и слушаем событие клика
-  //   var closeButton = document.querySelector('.header-search .close');
-  //   if (closeButton) {
-  //     closeButton.addEventListener('click', function () {
-  //       // Удаляем класс .header-search-active у body
-  //       document.body.classList.remove('header-search-active');
-  //     });
-  //   }
+      let targetClass = event.currentTarget.getAttribute('data-target');
+      let modal = document.getElementById(targetClass);
 
-  //   // анимация бегущих цифр на базе GSAP JS
-  //   // Активация ScrollTrigger
-  //   gsap.registerPlugin(ScrollTrigger);
+      if (modal) {
+        modal.classList.add('active');
+        setupBodyClickListener();
+      }
+    });
+  });
 
-  //   // Функция для анимации числа
-  //   function animateNumber(target, endValue) {
-  //     let obj = { score: 0 };
-  //     gsap.to(obj, {
-  //       score: endValue,
-  //       duration: 2, // Продолжительность анимации в секундах
-  //       onUpdate: function () {
-  //         target.innerText = Math.ceil(obj.score);
-  //       },
-  //       ease: "power1.out", // Тип анимации, можно изменить по желанию
-  //     });
-  //   }
+  // Закрытие активного модального окна
+  const closeActiveModal = () => {
+    let activeModal = document.querySelector('.modal.active');
+    if (activeModal) {
+      activeModal.classList.remove('active');
+    }
+  };
 
-  //   // Выбираем все элементы с числами для анимации
-  //   document.querySelectorAll('.animate-number').forEach((span) => {
-  //     // Получаем число из текста каждого элемента
-  //     const numberMatch = span.textContent.match(/\d+/);
-  //     if (numberMatch) {
-  //       const endValue = parseInt(numberMatch[0]);
-  //       // Создаем новый span для числа
-  //       const numberSpan = document.createElement('span');
-  //       numberSpan.textContent = '0';
-  //       // Заменяем число в исходном span на новый span
-  //       span.innerHTML = span.innerHTML.replace(numberMatch[0], numberSpan.outerHTML);
-  //       // Создаем ScrollTrigger для каждого числа
-  //       ScrollTrigger.create({
-  //         trigger: span, // Элемент-триггер для старта анимации
-  //         start: 'top 80%', // Анимация начнется, когда элемент появится на 80% в области видимости
-  //         onEnter: () => animateNumber(span.querySelector('span'), endValue) // Запуск анимации
-  //       });
-  //     }
-  //   });
+  // Показать модальное окно с сообщением об успешной отправке
+  const showSuccessModal = () => {
+    let successModal = document.getElementById('successModal');
+    if (successModal) {
+      successModal.classList.add('active');
+      setupBodyClickListener();
+    }
+  };
 
+  // Настройки маски для телефона
+  const maskOptions = {
+    mask: '+{7}(000)000-00-00'
+  };
 
-  //   // Подключаем Яндекс карту на сайт
-  //   ymaps.ready(function () {
-  //     initMap('.js-map', [61.785247, 92.727469], 4, [
-  //       // Массив данных для геометок большой карты
-  //       {
-  //         coords: [61.785247, 92.727469],
-  //         name: 'Место 1',
-  //         description: 'Краткое описание места 1.',
-  //         link: '#'
-  //       },
-  //       // Добавьте остальные объекты для геометок здесь
-  //     ]);
+  // Находим все элементы ввода с типом 'tel'
+  const phoneInputs = document.querySelectorAll('input[type="tel"]');
+  phoneInputs.forEach(input => {
+    const maskInstance = IMask(input, maskOptions);
+    input.setAttribute('pattern', '\\+7\\(\\d{3}\\)\\d{3}-\\d{2}-\\d{2}');
+    input.setAttribute('title', 'Номер телефона должен содержать 11 цифр');
 
-  //     initMap('.js-map-2', [55.751574, 37.573856], 5, [
-  //       // Массив данных для геометки маленькой карты
-  //       {
-  //         coords: [55.751574, 37.573856],
-  //         name: 'Место 2',
-  //         description: 'Краткое описание места 2.',
-  //         link: '#'
-  //       }
-  //     ]);
-  //   });
+    function checkValue() {
+      // Проверяем, есть ли что-то кроме маски
+      if (maskInstance.unmaskedValue) {
+        input.classList.add('has-value');
+      } else {
+        input.classList.remove('has-value');
+      }
+    }
 
-  //   function initMap(mapSelector, centerCoords, zoomLevel, places) {
-  //     if (document.querySelector(mapSelector)) {
-  //       let mapElement = document.querySelector(mapSelector);
-  //       let map = new ymaps.Map(mapElement, {
-  //         center: centerCoords,
-  //         zoom: zoomLevel,
-  //         type: 'yandex#satellite'
-  //       });
+    // Проверяем значение при потере фокуса и вводе данных
+    input.addEventListener('blur', checkValue);
+    input.addEventListener('input', checkValue);
+  });
 
-  //       // Включаем перетаскивание карты
-  //       map.behaviors.enable('drag');
-
-  //       // Добавляем метки на карту
-  //       places.forEach(function (place) {
-  //         let placeMark = new ymaps.Placemark(place.coords, {
-  //           name: place.name,
-  //           description: place.description,
-  //           link: place.link
-  //         }, {
-  //           balloonContentLayout: MyBalloonLayout,
-  //           iconLayout: 'default#image',
-  //           iconImageHref: './img/map/balun.svg',
-  //           iconImageSize: [42, 56],
-  //           iconImageOffset: [-19, -44]
-  //         });
-
-  //         map.geoObjects.add(placeMark);
-  //       });
-
-  //       // Удаление стандартных элементов управления и отключение прокрутки
-  //       map.controls.remove('geolocationControl');
-  //       map.controls.remove('searchControl');
-  //       map.controls.remove('trafficControl');
-  //       map.controls.remove('typeSelector');
-  //       map.behaviors.disable(['scrollZoom']);
-  //     }
-  //   }
-
-  //   // Шаблон балуна (можно оставить вне функции initMap)
-  //   var MyBalloonLayout = ymaps.templateLayoutFactory.createClass(
-  //     // ваш код шаблона балуна...
-  //   );
 
 });
 
