@@ -740,6 +740,11 @@ input.has-value + .custom-form__label {
   position: relative;
   z-index: 2;
 }
+@media (max-width: 768px) {
+  .decorate-wrapper::before {
+    display: none;
+  }
+}
 
 .social-list {
   list-style: none;

@@ -15,4 +15,9 @@
     position: relative;
     z-index: 2;
   }
+  @media (max-width: 768px) {
+    &::before {
+      display: none;
+    }
+  }
 }
