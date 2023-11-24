@@ -34,9 +34,17 @@
 @import "blocks/full-image";
 @import "blocks/text";
 @import "blocks/team-list";
-@import "blocks/sertificate-list";
+@import "blocks/certificate-list";
 @import "blocks/team-card";
 @import "blocks/decor";
+@import "blocks/images-cascade";
+@import "blocks/promo-announcement";
+@import "blocks/filter";
+@import "blocks/simple-articles";
+@import "blocks/stars-list";
+@import "blocks/tabs";
+@import "blocks/button-menu";
+
 
 @import "sections/header";
 @import "sections/home-screen";
@@ -58,6 +66,8 @@
 @import "sections/footer";
 
 @import "pages/home-page";
+@import "pages/catalog";
+@import "pages/product";
 
 @import "activity/modal-show";
 
@@ -65,6 +75,6 @@
 
 // @import "activity/scroll";
 // @import "activity/menu-accordion-active";
-// @import "activity/menu-open";
+@import "activity/menu-open";
 // @import "activity/header-sticky";
 // @import "activity/header-search-active";

@@ -41,32 +41,68 @@ document.addEventListener("DOMContentLoaded", () => {
   //     document.body.classList.toggle('menu-open');
   //   });
 
+  // показ мобильного меню и кнопки
+  const buttonMenu = document.querySelector('.button-menu');
+  // const navigation = document.querySelector('.navigation');
+  buttonMenu.addEventListener('click', function () {
+    buttonMenu.classList.toggle('isActive');
+    // navigation.classList.toggle('isActive');
+    document.body.classList.toggle('menu-open');
+  });
 
-  //   // Гибридный аккордеон в мобильном меню
-  //   if (document.documentElement.clientWidth <= 767) {
-  //     // Находим все ссылки с классом .js-accordion-link
-  //     let links = document.querySelectorAll('.js-accordion-link');
 
-  //     // Добавляем слушатель события 'click' для каждой ссылки
-  //     links.forEach(link => {
-  //       link.addEventListener('click', function (event) {
-  //         // Предотвращаем действие по умолчанию (если это обычная ссылка)
-  //         event.preventDefault();
+  // Гибридный аккордеон в мобильном меню
+  if (document.documentElement.clientWidth <= 1750) {
+    // Поиск всех элементов с классом 'main-navigation__item'
+    const menuItems = document.querySelectorAll('.main-navigation__item');
 
-  //         // Получаем родительский элемент
-  //         let parent = this.parentElement;
+    menuItems.forEach(item => {
+      const link = item.querySelector('.main-navigation__link');
+      const sublist = item.querySelector('.main-navigation__sublist');
 
-  //         // Проверяем, есть ли у родителя класс 'active'
-  //         if (parent.classList.contains('menu-accordion-active')) {
-  //           // Если класс есть - удаляем его
-  //           parent.classList.remove('menu-accordion-active');
-  //         } else {
-  //           // Если класса нет - добавляем его
-  //           parent.classList.add('menu-accordion-active');
-  //         }
-  //       });
-  //     });
-  //   };
+      // Проверка, содержит ли элемент списка подсписок
+      if (sublist) {
+        // Отмена действия по умолчанию при клике на ссылку
+        link.addEventListener('click', function (event) {
+          event.preventDefault();
+
+          // Добавление или удаление класса 'active' на ссылку
+          this.classList.toggle('active');
+        });
+      }
+    });
+
+  };
+  // простые табы в карточке товара
+  const tabs = document.querySelectorAll(".tabs__link");
+  const contents = document.querySelectorAll(".tabs__details");
+
+  // Проверяем, есть ли вкладки на странице
+  if (tabs.length > 0 && contents.length > 0) {
+    // Функция для активации вкладки и ее содержимого
+    function activateTab(tab) {
+      const activeTab = tab.getAttribute('data-tab');
+
+      // Удаляем активный класс со всех вкладок и содержимого
+      tabs.forEach(t => t.classList.remove('active'));
+      contents.forEach(c => c.classList.remove('active'));
+
+      // Добавляем активный класс выбранной вкладке и соответствующему содержимому
+      tab.classList.add('active');
+      document.querySelector(`.tabs__details[data-content="${activeTab}"]`).classList.add('active');
+    }
+
+    // Назначаем обработчики кликов
+    tabs.forEach(tab => {
+      tab.addEventListener("click", function (event) {
+        event.preventDefault();
+        activateTab(this);
+      });
+    });
+
+    // Активируем первую вкладку и ее содержимое по умолчанию
+    activateTab(tabs[0]);
+  }
 
   //   // слайдер с логотипами
   if (document.querySelector('.home-screen__slider .mySwiper')) {
@@ -83,7 +119,40 @@ document.addEventListener("DOMContentLoaded", () => {
     console.log('Слайдер с карточками есть!');
     var homeScreenSwiper = new Swiper("#card-slider-1 .mySwiper", {
       slidesPerView: 2,
-      spaceBetween: 25
+      spaceBetween: 25,
+      breakpoints: {
+        // when window width is >= 320px
+        425: {
+          slidesPerView: 1
+        },
+        // // when window width is >= 480px
+        // 767: {
+        //   slidesPerView: 2
+        // },
+        // 1023: {
+        //   slidesPerView: 3
+        // },
+        // 1279: {
+        //   slidesPerView: 4
+        // },
+        // when window width is >= 640px
+        1750: {
+          slidesPerView: 1
+        }
+      }
+    });
+  };
+
+  //   // слайдер со статьями в карточке товара
+  if (document.querySelector('.product__articles-slider .mySwiper')) {
+    console.log('Слайдер со статьями в карточке товара есть!');
+    var productArticlesSlider = new Swiper(".product__articles-slider .mySwiper", {
+      slidesPerView: 1,
+      spaceBetween: 25,
+      navigation: {
+        nextEl: ".product__articles-slider .swiper-button-next",
+        prevEl: ".product__articles-slider .swiper-button-prev",
+      },
     });
   };
 
@@ -92,7 +161,27 @@ document.addEventListener("DOMContentLoaded", () => {
     console.log('Слайдер со статьями есть!');
     var homeScreenSwiper = new Swiper("#card-slider-2 .mySwiper", {
       slidesPerView: 2,
-      spaceBetween: 25
+      spaceBetween: 25,
+      breakpoints: {
+        // when window width is >= 320px
+        320: {
+          slidesPerView: 1.2
+        },
+        // // when window width is >= 480px
+        // 767: {
+        //   slidesPerView: 2
+        // },
+        // 1023: {
+        //   slidesPerView: 3
+        // },
+        // 1279: {
+        //   slidesPerView: 4
+        // },
+        // when window width is >= 640px
+        1750: {
+          slidesPerView: 1.2
+        }
+      }
     });
   };
 
@@ -101,20 +190,63 @@ document.addEventListener("DOMContentLoaded", () => {
     console.log('Слайдер с отзывами есть!');
     var homeScreenSwiper = new Swiper(".reviews .mySwiper", {
       slidesPerView: 2.3,
-      spaceBetween: 25
+      spaceBetween: 25,
+      breakpoints: {
+        // when window width is >= 320px
+        320: {
+          slidesPerView: 1
+        },
+        // // when window width is >= 480px
+        // 767: {
+        //   slidesPerView: 2
+        // },
+        // 1023: {
+        //   slidesPerView: 3
+        // },
+        768: {
+          slidesPerView: 1.2
+        },
+        // when window width is >= 640px
+        1750: {
+          slidesPerView: 2.3
+        }
+      }
     });
   };
 
-  //   // слайдер c отзывами
+  //   // слайдер c документами
   if (document.querySelector('.docs .mySwiper')) {
     console.log('Слайдер с документами есть!');
     var homeScreenSwiper = new Swiper(".docs .mySwiper", {
       slidesPerView: 4,
       spaceBetween: 80,
       navigation: {
-                nextEl: ".docs .swiper-button-next",
-                prevEl: ".docs .swiper-button-prev",
-              },
+        nextEl: ".docs .swiper-button-next",
+        prevEl: ".docs .swiper-button-prev",
+      },
+      breakpoints: {
+        // when window width is >= 320px
+        320: {
+          slidesPerView: 1.5,
+          spaceBetween: 40
+        },
+        // // when window width is >= 480px
+        768: {
+          slidesPerView: 2,
+          spaceBetween: 80
+        },
+        1024: {
+          slidesPerView: 3,
+        },
+        // 1279: {
+        //   slidesPerView: 4
+        // },
+        // when window width is >= 640px
+        1750: {
+          slidesPerView: 4
+        }
+      }
+
     });
   };
 
