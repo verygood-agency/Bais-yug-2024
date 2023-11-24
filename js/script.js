@@ -122,8 +122,9 @@ document.addEventListener("DOMContentLoaded", () => {
       spaceBetween: 25,
       breakpoints: {
         // when window width is >= 320px
-        425: {
-          slidesPerView: 1
+        320: {
+          slidesPerView: 1,
+          spaceBetween: 16
         },
         // // when window width is >= 480px
         // 767: {
@@ -137,7 +138,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // },
         // when window width is >= 640px
         1750: {
-          slidesPerView: 1
+          slidesPerView: 2
         }
       }
     });
