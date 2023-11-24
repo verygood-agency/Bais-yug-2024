@@ -2488,6 +2488,9 @@ input.has-value + .custom-form__label {
     margin-left: auto;
     margin-right: 10px;
   }
+  .home-screen .home-screen__slide {
+    padding-bottom: 65px;
+  }
 }
 
 .content {
